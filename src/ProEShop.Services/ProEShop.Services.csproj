@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="DNTCommon.Web.Core" Version="3.7.0" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ProEShop.Common\ProEShop.Common.csproj" />
+		<ProjectReference Include="..\ProEShop.DataLayer\ProEShop.DataLayer.csproj" />
+		<ProjectReference Include="..\ProEShop.Entities\ProEShop.Entities.csproj" />
+		<ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
+	</ItemGroup>
+
+</Project>
