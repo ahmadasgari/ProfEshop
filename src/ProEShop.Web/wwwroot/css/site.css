@@ -35,3 +35,9 @@ a{
 .rem0and9{
     font-size: 0.85rem;
 }
+.span-error-message {
+    color: #df0202;
+    padding: 0 5px;
+    display: block;
+    margin-top: 5px;
+}
