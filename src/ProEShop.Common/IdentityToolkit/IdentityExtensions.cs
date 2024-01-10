@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -70,5 +71,14 @@ public static class IdentityExtensions
             return userId;
         }
         return null;
+    }
+    public static void AddErrorsFromResult(this ModelStateDictionary
+        modelState, IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            modelState.AddModelError(string.Empty, error.Description);
+
+        }
     }
 }
