@@ -46,32 +46,50 @@ public class RegisterLoginModel : PageModel
         var isInputEmail = registerLogin.PhoneNumberOrEmail.IsEmail();
         if (!isInputEmail)
         {
-            var user = new User
+            var addNewUser = false;
+            var user = await _userManager.FindByNameAsync(registerLogin.PhoneNumberOrEmail);
+            if (user is null)
             {
-                UserName = registerLogin.PhoneNumberOrEmail,
-                PhoneNumber = registerLogin.PhoneNumberOrEmail,
-                Avatar = _siteSettings.UserDefaultAvatar,
-                Email = $"{StringHelpers.GenerateGuid()}@test.com"
-
-            };
-            var result = await _userManager.CreateAsync(user);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(LogCodes.RegisterCode,
-                $"{user.UserName} created a new account with phone number");
-                var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
-                return RedirectToPage("./LoginWithPhoneNumber", new
+                var user1 = new User
                 {
-                    phoneNumber = registerLogin.PhoneNumberOrEmail
+                    UserName = registerLogin.PhoneNumberOrEmail,
+                    PhoneNumber = registerLogin.PhoneNumberOrEmail,
+                    Avatar = _siteSettings.UserDefaultAvatar,
+                    Email = $"{StringHelpers.GenerateGuid()}@test.com",
+                    SendSmsLastTime = DateTime.Now,
+                
+                };
+                var result = await _userManager.CreateAsync(user1);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation(LogCodes.RegisterCode,
+                    $"{user1.UserName} created a new account with phone number");
+                    addNewUser = true;
 
-                });
+                }
+                else
+                {
+                    ModelState.AddErrorsFromResult(result);
+                    return Page();
+                }
 
             }
-            ModelState.AddErrorsFromResult(result);
+
+            if (DateTime.Now > user.SendSmsLastTime.AddMinutes(3) ||
+                addNewUser)
+            {
+                var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, registerLogin.PhoneNumberOrEmail);
+                
+            }
             
                 
         }
-        return Page();
+        return RedirectToPage("./LoginWithPhoneNumber", new
+        {
+            phoneNumber = registerLogin.PhoneNumberOrEmail
+
+        });
+
 
     }
 }

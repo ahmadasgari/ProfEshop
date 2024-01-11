@@ -23,6 +23,7 @@ public class User : IdentityUser<long>, IAuditableEntity
     [Required]
     [MaxLength(50)]
     public string Avatar { get; set; }
+    public DateTime SendSmsLastTime { get; set; }
 
     public virtual ICollection<UserClaim> UserClaims { get; set; }
     public virtual ICollection<UserLogin> UserLogins { get; set; }

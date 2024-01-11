@@ -6,16 +6,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
+	  <None Remove="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.css" />
 	  <None Remove="Pages\Identity\RegisterLogin.cshtml.js" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Include="Pages\Identity\LoginWithPhoneNumber.cshtml.js" />
-	</ItemGroup>
-
-	<ItemGroup>
+	  <Content Include="Pages\Identity\LoginWithPhoneNumber.cshtml.css" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.js" />
 	  <Content Include="Pages\Identity\RegisterLogin.cshtml.css" />
 	</ItemGroup>
@@ -36,6 +33,10 @@
 		<ProjectReference Include="..\ProEShop.IocConfig\ProEShop.IocConfig.csproj" />
 		<ProjectReference Include="..\ProEShop.Services\ProEShop.Services.csproj" />
 		<ProjectReference Include="..\ProEShop.ViewModels\ProEShop.ViewModels.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\js\Identity\" />
 	</ItemGroup>
 
 </Project>
