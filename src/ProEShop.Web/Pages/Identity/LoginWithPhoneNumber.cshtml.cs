@@ -7,7 +7,7 @@ using System.Reflection.Metadata;
 
 namespace ProEShop.Web.Pages.Identity;
 
-public class LoginWithPhoneNumberModel : PageModel
+public class LoginWithPhoneNumberModel : PageBase
 {
     #region Constructor
 
@@ -28,7 +28,7 @@ public class LoginWithPhoneNumberModel : PageModel
     #endregion
 
     public LoginWithPhoneNumberViewModel LoginWithPhoneNumber { get; set; }
-    = new LoginWithPhoneNumberViewModel();
+    = new();
     [ViewData]
     public string ActivationCode { get; set; }
     public async Task<IActionResult> OnGetAsync(string phoneNumber)
@@ -56,37 +56,38 @@ public class LoginWithPhoneNumberModel : PageModel
     {
         if (!ModelState.IsValid)
         {
-            return Page();
+            return Json(new JsonResultOperation(false, "مقادیر را به درستی وارد نمایید"));
         }
 
         var user = await _userManager.FindByNameAsync(loginWithPhoneNumber.PhoneNumber);
         if(user is null)
         {
-            return Page();
+            return Json(new JsonResultOperation(false));
         }
         var result = await _userManager.VerifyChangePhoneNumberTokenAsync(
             user, loginWithPhoneNumber.ActivationCode, loginWithPhoneNumber.PhoneNumber);
         if (!result)
         {
-            return Page();
+            return Json(new JsonResultOperation(false, "کد وارد شده صحیح نمیباشد"));
         }
         await _signInManager.SignInAsync(user, true);
-        return RedirectToPage("/Test");
+        var result1 = Json(new JsonResultOperation(true, "شما با موفقیت وارد شدید"));
+        return result1;
     }
 
-    public async Task<IActionResult> OnPostSendUserSmsActivationAsync(string phoneNumber)
+    public async Task<IActionResult> OnPostReSendUserSmsActivationAsync(string phoneNumber)
     {
         var user = await _userManager.FindByNameAsync(phoneNumber);
         if (user is null)
-            return new JsonResult(new JsonResultOperation(false));
+            return  Json(new JsonResultOperation(false));
         if (user.SendSmsLastTime.AddMinutes(3) > DateTime.Now)
-            return new JsonResult(new JsonResultOperation(false));
+            return Json(new JsonResultOperation(false));
         var phoneNumberToken = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
         var sendText = $"کد فعال سازی : {phoneNumberToken}";
         //var SmsSend = _sendSms.sendsms("", "", user.PhoneNumber, "", sendText, false);
         user.SendSmsLastTime = DateTime.Now;
         await _userManager.UpdateAsync(user);
-        return new JsonResult(new JsonResultOperation(true, "کد فعالسازی مجددا ارسال شد")
+        return Json(new JsonResultOperation(true, "کد فعالسازی مجددا ارسال شد")
         {
             Data = new
             {

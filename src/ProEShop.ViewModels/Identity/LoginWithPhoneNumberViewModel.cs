@@ -12,8 +12,8 @@ public class LoginWithPhoneNumberViewModel
 {
     [Display(Name ="کد فعالسازی")]
     [Required(ErrorMessage =AttributesErrorMessages.RequiredMessage)]
+    [RegularExpression(@"[\d]{6}", ErrorMessage = AttributesErrorMessages.RegularExpressionMessage)]
     [MaxLength(6, ErrorMessage = AttributesErrorMessages.MaxLengthMessage)]
-    [MinLength(6,ErrorMessage =AttributesErrorMessages.MinLengthMessage)]
     public string ActivationCode { get; set; }
     [HiddenInput]
     public string PhoneNumber { get; set; }
