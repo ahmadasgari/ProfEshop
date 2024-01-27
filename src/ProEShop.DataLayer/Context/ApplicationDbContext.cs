@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using ProEShop.Common.EntityFramewrok;
 using ProEShop.Entities;
 using ProEShop.Entities.AuditableEntity;
 using ProEShop.Entities.Identity;
@@ -41,13 +42,15 @@ public class ApplicationDbContext :
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
+    //public DbSet<Category> Categories { get; set; }
+    //public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        builder.RegisterAllEntities(typeof(EntityBase));
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        builder.Entity<Category>().HasQueryFilter(b => !b.IsDeleted);
         //...
         // This should be placed here, at the end.
         builder.AddAuditableShadowProperties();
