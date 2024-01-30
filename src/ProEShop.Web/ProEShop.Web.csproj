@@ -37,8 +37,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="wwwroot\js\Admin\Category\" />
 	  <Folder Include="wwwroot\js\Identity\" />
-	  <Folder Include="wwwroot\js\Admin\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="Pages\Admin\Category\List.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
 	</ItemGroup>
 
 </Project>
